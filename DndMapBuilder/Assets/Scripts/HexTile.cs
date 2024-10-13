@@ -5,37 +5,71 @@ using UnityEngine;
 public class HexTile : MonoBehaviour
 {
   public GameObject slot;
-  public GameObject tile = null;
   public Material hoverMaterial;
   public Material defaultMaterial;
-  private Material overrideMaterial;
 
-  public bool IsOccupied => tile != null;
+  private int count;
+  private GameObject prefab;
+  private Material material;
+  private List<GameObject> tiles = new List<GameObject>();
+
+  public bool IsOccupied => prefab != null && material != null;
 
   private void Start()
   {
     SetIsHovered(false);
+    count = 0;
+  }
+
+  private void DeleteObjects()
+  {
+    foreach (var tile in tiles)
+      Destroy(tile);
+    tiles.Clear();
+  }
+
+  private void CreateObjects()
+  {
+    var bounds = prefab.GetComponent<MeshRenderer>().bounds;
+    var height = bounds.size.y;
+    for (var i = 0; i < count; i++)
+    {
+      var tile = Instantiate(prefab, transform.position + new Vector3(0, height * i, 0), Quaternion.identity, transform);
+      tiles.Add(tile);
+    }
+
+    foreach (var meshRenderer in GetMeshRenderers())
+    {
+      meshRenderer.material = material;
+    }
   }
 
   public void Clear()
   {
-    overrideMaterial = null;
-    if (tile != null)
-    {
-      Destroy(tile);
-    }
+    count = 0;
+    prefab = null;
+    material = null;
+    DeleteObjects();
   }
 
   public void Edit(GameObject prefab, Material material)
   {
     Clear();
-    tile = Instantiate(prefab, transform.position, Quaternion.identity, transform);
+    count = 1;
+    this.prefab = prefab;
+    this.material = material;
+    CreateObjects();
     SetIsHovered(false);
-    overrideMaterial = material;
-    foreach (var meshRenderer in GetMeshRenderers())
-    {
-      meshRenderer.material = material;
-    }
+  }
+
+  public void SetCount(int count)
+  {
+    if (!IsOccupied)
+      return;
+
+    this.count = count;
+    DeleteObjects();
+    CreateObjects();
   }
 
   private IEnumerable<MeshRenderer> GetMeshRenderers()
@@ -49,7 +83,7 @@ public class HexTile : MonoBehaviour
     if (isHovered)
       mat = hoverMaterial;
     else
-      mat = overrideMaterial != null ? overrideMaterial : defaultMaterial;
+      mat = material ? material : defaultMaterial;
 
     foreach (var meshRenderer in GetMeshRenderers())
     {

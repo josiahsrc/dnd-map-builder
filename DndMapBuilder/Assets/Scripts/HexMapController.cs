@@ -48,6 +48,20 @@ public class HexMapController : MonoBehaviour
       tile.Clear();
     }
 
+    if (tile != null)
+    {
+      if (Input.GetKey(KeyCode.Alpha1))
+        tile.SetCount(1);
+      if (Input.GetKey(KeyCode.Alpha2))
+        tile.SetCount(2);
+      if (Input.GetKey(KeyCode.Alpha3))
+        tile.SetCount(3);
+      if (Input.GetKey(KeyCode.Alpha4))
+        tile.SetCount(4);
+      if (Input.GetKey(KeyCode.Alpha5))
+        tile.SetCount(5);
+    }
+
     if (tile != lastHoveredTile)
     {
       if (lastHoveredTile != null)
