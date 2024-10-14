@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+  public static float SensitivityMult = 1.0f;
+
   public float orbitSpeed = 10f;
   public float moveSpeed = 10f;
   public float sensitivity = 10f;
@@ -33,11 +35,13 @@ public class CameraController : MonoBehaviour
 
   void OrbitAroundTarget()
   {
-    if (Input.GetMouseButton(0) && ControlManager.Instance.IsMeta())
+    var isLeftMouseAndMeta = Input.GetMouseButton(0) && ControlManager.Instance.IsMeta();
+    var isRightMouse = Input.GetMouseButton(1);
+    if (isLeftMouseAndMeta || isRightMouse)
     {
       Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-      float angleX = mouseDelta.x * orbitSpeed * Time.deltaTime * sensitivity;
-      float angleY = mouseDelta.y * orbitSpeed * Time.deltaTime * sensitivity;
+      float angleX = mouseDelta.x * orbitSpeed * Time.deltaTime * sensitivity * SensitivityMult;
+      float angleY = mouseDelta.y * orbitSpeed * Time.deltaTime * sensitivity * SensitivityMult;
 
       transform.RotateAround(target, Vector3.up, angleX);
       transform.RotateAround(target, transform.right, -angleY);
