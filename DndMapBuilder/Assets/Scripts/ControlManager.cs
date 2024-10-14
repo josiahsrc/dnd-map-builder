@@ -8,6 +8,7 @@ public class ControlManager : MonoBehaviour
   public static ControlManager Instance { get; private set; }
 
   public bool IsOverUI { get; private set; }
+  public bool IsFocusedUI { get; private set; }
   public LayerMask UILayer;
 
   public bool IsMeta() => Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl);
@@ -19,6 +20,7 @@ public class ControlManager : MonoBehaviour
 
   void Update()
   {
+    IsFocusedUI = EventSystem.current.currentSelectedGameObject != null;
     IsOverUI = EventSystem.current.IsPointerOverGameObject();
   }
 }

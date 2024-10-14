@@ -8,6 +8,7 @@ public class Setting : MonoBehaviour
 {
   public Material material;
   public GameObject prefab;
+  public Sprite prefabImage;
   public GameObject outline;
   public Image image;
 
@@ -21,6 +22,7 @@ public class Setting : MonoBehaviour
 
     if (prefab != null)
     {
+      image.sprite = prefabImage;
       outline.SetActive(prefab == HexMapController.currentPrefab);
     }
   }
@@ -31,5 +33,10 @@ public class Setting : MonoBehaviour
       HexMapController.currentMaterial = material;
     if (prefab != null)
       HexMapController.currentPrefab = prefab;
+  }
+
+  public void SetScrollIntensity(float intensity)
+  {
+    CameraController.SensitivityMult = intensity;
   }
 }

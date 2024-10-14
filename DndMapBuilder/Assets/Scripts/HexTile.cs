@@ -8,7 +8,11 @@ public class HexTile : MonoBehaviour
   public Material hoverMaterial;
   public Material defaultMaterial;
 
-  private int count;
+  public int Count => count;
+  public GameObject Prefab => prefab;
+  public Material Material => material;
+
+  private int count = 0;
   private GameObject prefab;
   private Material material;
   private List<GameObject> tiles = new List<GameObject>();
@@ -18,7 +22,6 @@ public class HexTile : MonoBehaviour
   private void Start()
   {
     SetIsHovered(false);
-    count = 0;
   }
 
   private void DeleteObjects()
@@ -40,7 +43,7 @@ public class HexTile : MonoBehaviour
 
     foreach (var meshRenderer in GetMeshRenderers())
     {
-      meshRenderer.material = material;
+      meshRenderer.sharedMaterial = material;
     }
   }
 

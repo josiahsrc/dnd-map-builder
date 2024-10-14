@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HexMap : MonoBehaviour
 {
+  public Config config;
   public GameObject cellPrefab; // The hex cell prefab
   private Dictionary<Vector3Int, HexTile> cells = new Dictionary<Vector3Int, HexTile>();
   public int radius = 10; // Radius of the hexagonal grid
@@ -14,14 +15,35 @@ public class HexMap : MonoBehaviour
   private const float horizontalSpacing = hexWidth;
   private const float verticalSpacing = hexHeight * 0.75f;
 
+  public void LoadMap(MapData mapData = null)
+  {
+    ClearMap();
+    GenerateMap(mapData ?? new MapData());
+  }
+
   void Start()
   {
-    GenerateMap();
+    LoadMap(new MapData());
+  }
+
+  private void ClearMap()
+  {
+    foreach (Transform child in transform)
+    {
+      Destroy(child.gameObject);
+    }
+    cells.Clear();
   }
 
   // Method to generate the hex map
-  private void GenerateMap()
+  private void GenerateMap(MapData mapData)
   {
+    var tileLookup = new Dictionary<string, TileData>();
+    for (var i = 0; i < mapData.ids.Count; i++)
+    {
+      tileLookup[mapData.ids[i]] = mapData.tiles[i];
+    }
+
     for (int q = -radius; q <= radius; q++)
     {
       int r1 = Mathf.Max(-radius, -q - radius);
@@ -30,8 +52,44 @@ public class HexMap : MonoBehaviour
       {
         Vector3Int hexCoord = new Vector3Int(q, -q - r, r);
         PlaceHexTile(hexCoord);
+
+        var data = tileLookup.GetValueOrDefault(MapData.ToKey(q, r));
+        if (data != null)
+        {
+          var tileData = config.GetTile(data.tileId);
+          var colorData = config.GetColor(data.colorId);
+          var hexTile = GetHexTileAt(hexCoord);
+          hexTile.Edit(tileData.prefab, colorData.material);
+          hexTile.SetCount(data.count);
+        }
       }
     }
+  }
+
+  public MapData BuildMapData()
+  {
+    var ids = new List<string>();
+    var tiles = new List<TileData>();
+    foreach (var cell in cells)
+    {
+      if (cell.Value.IsOccupied)
+      {
+        var key = MapData.ToKey(cell.Key.x, cell.Key.z);
+        ids.Add(key);
+        tiles.Add(new TileData()
+        {
+          tileId = config.GetTileId(cell.Value.Prefab),
+          colorId = config.GetColorId(cell.Value.Material),
+          count = cell.Value.Count,
+        });
+      }
+    }
+
+    return new MapData()
+    {
+      ids = ids,
+      tiles = tiles,
+    };
   }
 
   // Method to place a hex tile at a given hex coordinate

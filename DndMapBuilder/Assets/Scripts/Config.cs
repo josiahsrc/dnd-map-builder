@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "Config", menuName = "Config")]
+public class Config : ScriptableObject
+{
+  public List<Tile> tiles;
+  public List<Color> colors;
+
+  private Dictionary<string, Tile> tileDict = null;
+  private Dictionary<string, Color> colorDict = null;
+
+  public Tile GetTile(string id)
+  {
+    if (tileDict == null)
+    {
+      tileDict = new Dictionary<string, Tile>();
+      foreach (var tile in tiles)
+        tileDict[tile.id] = tile;
+    }
+
+    return tileDict[id];
+  }
+
+  public Color GetColor(string id)
+  {
+    if (colorDict == null)
+    {
+      colorDict = new Dictionary<string, Color>();
+      foreach (var color in colors)
+        colorDict[color.id] = color;
+    }
+
+    return colorDict[id];
+  }
+
+  public string GetTileId(GameObject prefab)
+  {
+    return prefab.name;
+  }
+
+  public string GetColorId(Material material)
+  {
+    return material.name;
+  }
+
+  [System.Serializable]
+  public class Tile
+  {
+    public GameObject prefab;
+    public Sprite image;
+
+    public string id => prefab.name;
+  }
+
+  [System.Serializable]
+  public class Color
+  {
+    public Material material;
+
+    public string id => material.name;
+  }
+}

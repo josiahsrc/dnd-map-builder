@@ -55,14 +55,17 @@ public class CameraController : MonoBehaviour
   {
     Vector3 move = new Vector3();
 
-    if (Input.GetKey(KeyCode.W))
-      move += transform.forward;
-    if (Input.GetKey(KeyCode.S))
-      move -= transform.forward;
-    if (Input.GetKey(KeyCode.A))
-      move -= transform.right;
-    if (Input.GetKey(KeyCode.D))
-      move += transform.right;
+    if (!ControlManager.Instance.IsFocusedUI)
+    {
+      if (Input.GetKey(KeyCode.W))
+        move += transform.forward;
+      if (Input.GetKey(KeyCode.S))
+        move -= transform.forward;
+      if (Input.GetKey(KeyCode.A))
+        move -= transform.right;
+      if (Input.GetKey(KeyCode.D))
+        move += transform.right;
+    }
 
     currPos += new Vector2(move.x, move.z) * moveSpeed * Time.deltaTime;
     target += new Vector3(move.x, 0, move.z) * moveSpeed * Time.deltaTime;
@@ -70,7 +73,7 @@ public class CameraController : MonoBehaviour
 
   void Zoom()
   {
-    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    float scroll = ControlManager.Instance.IsOverUI ? 0 : Input.GetAxis("Mouse ScrollWheel");
     if (scroll != 0.0f)
     {
       // Get the direction from the camera to the target
