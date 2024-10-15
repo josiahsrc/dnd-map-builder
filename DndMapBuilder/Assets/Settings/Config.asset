@@ -30,3 +30,18 @@ MonoBehaviour:
   - material: {fileID: 2100000, guid: e5a07a150a6024bb8b2674a579f97775, type: 2}
   - material: {fileID: 2100000, guid: 9a572be36873a48599b22d48f51b9f4f, type: 2}
   - material: {fileID: 2100000, guid: 4277ab011a46c469abc8b8b7b2b889b9, type: 2}
+  icons:
+  - {fileID: 21300000, guid: aff7aba85498e48629ee90797a9089f6, type: 3}
+  - {fileID: 21300000, guid: 3b44854be11c54e8db10e5303cb6bc9d, type: 3}
+  - {fileID: 21300000, guid: 0fb8d631399524c4eb14ebf240749910, type: 3}
+  - {fileID: 21300000, guid: 190484ee53b9f4e4292afddcdd1db5a3, type: 3}
+  - {fileID: 21300000, guid: 11b26133b52964c25931eb51495d3de7, type: 3}
+  - {fileID: 21300000, guid: c7546f523dd874e8d99be19ff0bebc40, type: 3}
+  - {fileID: 21300000, guid: bd985692f5f9940f1811128829e6cb95, type: 3}
+  - {fileID: 21300000, guid: 408b76b4af53f4226a2035ac83fe0733, type: 3}
+  - {fileID: 21300000, guid: b4bd9de6aa18a49e1b75599193bc3b1b, type: 3}
+  - {fileID: 21300000, guid: b2779cca0745647a898ed54d8562b7f6, type: 3}
+  - {fileID: 21300000, guid: 81c897d4a398a426aba285a8758060dd, type: 3}
+  - {fileID: 21300000, guid: eeb6632c79e7c44d085b03f4fb515666, type: 3}
+  - {fileID: 21300000, guid: ddc272d10377344eda51e4f3cfd2e0cc, type: 3}
+  - {fileID: 21300000, guid: 5b4375f0a1fa741c4b784d97bfb50a43, type: 3}

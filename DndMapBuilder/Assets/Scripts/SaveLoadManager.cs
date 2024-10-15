@@ -36,6 +36,7 @@ public class TileData
 {
   public string tileId;
   public string colorId;
+  public string iconId;
   public int count;
 }
 

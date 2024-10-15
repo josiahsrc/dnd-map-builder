@@ -19,7 +19,7 @@ public class SettingCreator : MonoBehaviour
         setting.prefabImage = tile.image;
       }
     }
-    else
+    else if (type == SettingType.color)
     {
       foreach (var color in config.colors)
       {
@@ -27,11 +27,24 @@ public class SettingCreator : MonoBehaviour
         setting.material = color.material;
       }
     }
+    else if (type == SettingType.icon)
+    {
+      foreach (var icon in config.icons)
+      {
+        var setting = Instantiate(settingPrefab, transform).GetComponent<Setting>();
+        setting.icon = icon;
+      }
+    }
+    else
+    {
+      throw new System.Exception("Invalid setting type");
+    }
   }
 
   public enum SettingType
   {
     tile,
-    color
+    color,
+    icon,
   }
 }

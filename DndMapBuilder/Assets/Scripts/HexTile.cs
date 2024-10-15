@@ -7,10 +7,12 @@ public class HexTile : MonoBehaviour
   public GameObject slot;
   public Material hoverMaterial;
   public Material defaultMaterial;
+  public SpriteRenderer iconRenderer;
 
   public int Count => count;
   public GameObject Prefab => prefab;
   public Material Material => material;
+  public Sprite Icon => iconRenderer.sprite;
 
   private int count = 0;
   private GameObject prefab;
@@ -29,6 +31,13 @@ public class HexTile : MonoBehaviour
     foreach (var tile in tiles)
       Destroy(tile);
     tiles.Clear();
+  }
+
+  private void UpdateIconRendererPosition()
+  {
+    var bounds = prefab.GetComponent<MeshRenderer>().bounds;
+    var height = bounds.size.y;
+    iconRenderer.transform.position = transform.position + new Vector3(0, height * count, 0) + new Vector3(0, 0.1f, 0);
   }
 
   private void CreateObjects()
@@ -52,17 +61,36 @@ public class HexTile : MonoBehaviour
     count = 0;
     prefab = null;
     material = null;
+    iconRenderer.sprite = null;
     DeleteObjects();
+    UpdateIconRendererPosition();
   }
 
   public void Edit(GameObject prefab, Material material)
   {
-    Clear();
     count = 1;
     this.prefab = prefab;
     this.material = material;
+    DeleteObjects();
     CreateObjects();
+    UpdateIconRendererPosition();
     SetIsHovered(false);
+  }
+
+  public void EditIcon(Sprite icon)
+  {
+    if (!IsOccupied)
+      return;
+
+    if (iconRenderer.sprite == icon)
+      SetIcon(null);
+    else
+      SetIcon(icon);
+  }
+
+  public void SetIcon(Sprite icon)
+  {
+    iconRenderer.sprite = icon;
   }
 
   public void SetCount(int count)
@@ -73,6 +101,7 @@ public class HexTile : MonoBehaviour
     this.count = count;
     DeleteObjects();
     CreateObjects();
+    UpdateIconRendererPosition();
   }
 
   private IEnumerable<MeshRenderer> GetMeshRenderers()

@@ -7,9 +7,11 @@ public class Config : ScriptableObject
 {
   public List<Tile> tiles;
   public List<Color> colors;
+  public List<Sprite> icons;
 
   private Dictionary<string, Tile> tileDict = null;
   private Dictionary<string, Color> colorDict = null;
+  private Dictionary<string, Sprite> iconDict = null;
 
   public Tile GetTile(string id)
   {
@@ -35,14 +37,31 @@ public class Config : ScriptableObject
     return colorDict[id];
   }
 
-  public string GetTileId(GameObject prefab)
+  public Sprite GetIcon(string id)
+  {
+    if (iconDict == null)
+    {
+      iconDict = new Dictionary<string, Sprite>();
+      foreach (var icon in icons)
+        iconDict[GetIconId(icon)] = icon;
+    }
+
+    return iconDict.GetValueOrDefault(id, null);
+  }
+
+  public static string GetTileId(GameObject prefab)
   {
     return prefab.name;
   }
 
-  public string GetColorId(Material material)
+  public static string GetColorId(Material material)
   {
     return material.name;
+  }
+
+  public static string GetIconId(Sprite sprite)
+  {
+    return sprite.name;
   }
 
   [System.Serializable]
@@ -51,7 +70,7 @@ public class Config : ScriptableObject
     public GameObject prefab;
     public Sprite image;
 
-    public string id => prefab.name;
+    public string id => GetTileId(prefab);
   }
 
   [System.Serializable]
@@ -59,6 +78,6 @@ public class Config : ScriptableObject
   {
     public Material material;
 
-    public string id => material.name;
+    public string id => GetColorId(material);
   }
 }

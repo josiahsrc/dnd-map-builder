@@ -5,17 +5,20 @@ public class HexMapController : MonoBehaviour
 {
   public static GameObject currentPrefab;
   public static Material currentMaterial;
+  public static Sprite currentIcon;
 
   public HexMap hexMap;
   private Camera mainCamera;
   private HexTile lastHoveredTile = null;
   public GameObject initialPrefab;
   public Material initialMaterial;
+  public Sprite initialIcon;
 
   void Start()
   {
     currentPrefab = initialPrefab;
     currentMaterial = initialMaterial;
+    currentIcon = initialIcon;
 
     // Get the main camera
     mainCamera = Camera.main;
@@ -42,6 +45,10 @@ public class HexMapController : MonoBehaviour
     if (Input.GetMouseButton(0) && !ControlManager.Instance.IsMeta() && tile != null)
     {
       tile.Edit(currentPrefab, currentMaterial);
+    }
+    if (Input.GetKeyDown(KeyCode.I) && tile != null)
+    {
+      tile.EditIcon(currentIcon);
     }
     if (Input.GetKey(KeyCode.X) && tile != null)
     {

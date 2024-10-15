@@ -58,9 +58,11 @@ public class HexMap : MonoBehaviour
         {
           var tileData = config.GetTile(data.tileId);
           var colorData = config.GetColor(data.colorId);
+          var iconData = config.GetIcon(data.iconId);
           var hexTile = GetHexTileAt(hexCoord);
           hexTile.Edit(tileData.prefab, colorData.material);
           hexTile.SetCount(data.count);
+          hexTile.SetIcon(iconData);
         }
       }
     }
@@ -78,8 +80,9 @@ public class HexMap : MonoBehaviour
         ids.Add(key);
         tiles.Add(new TileData()
         {
-          tileId = config.GetTileId(cell.Value.Prefab),
-          colorId = config.GetColorId(cell.Value.Material),
+          tileId = Config.GetTileId(cell.Value.Prefab),
+          colorId = Config.GetColorId(cell.Value.Material),
+          iconId = cell.Value.Icon ? Config.GetIconId(cell.Value.Icon) : null,
           count = cell.Value.Count,
         });
       }
